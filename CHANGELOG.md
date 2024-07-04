@@ -1,5 +1,11 @@
 # @bryandelaitre/mapbox-for-webflow
 
+## 1.1.0
+
+### Minor Changes
+
+- 67875db: Project reorganized, worked on reliability
+
 ## 1.0.0
 
 ### Major Changes
