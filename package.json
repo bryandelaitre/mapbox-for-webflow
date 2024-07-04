@@ -54,6 +54,7 @@
   "dependencies": {
     "@finsweet/ts-utils": "^0.40.0",
     "@types/mapbox-gl": "^3.1.0",
+    "css-loader": "^7.1.2",
     "mapbox-gl": "^3.4.0"
   },
   "engines": {

@@ -15,8 +15,11 @@ export interface MapboxInitData {
 }
 
 export interface mapMarker {
-  adress: string
-  longitude: number
-  latitude: number
+  position: {
+    type: string
+    adress: string
+    longitude: number
+    latitude: number
+  }
   htmlElement: HTMLElement
 }

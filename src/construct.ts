@@ -6,11 +6,26 @@ import { type MapboxInitData } from './interfaces'
 
 const mapContainer = document.querySelector('[mapbox-container="true"]') as HTMLElement
 
-let projectionValue = mapContainer.getAttribute('mapbox-projection') || 'naturalEarth'
-if (!['mercator', 'naturalEarth', 'globe'].includes(projectionValue)) {
-  projectionValue = 'naturalEarth'
+// List of available projections
+const projectionList = [
+  'albers',
+  'equalEarth',
+  'equirectangular',
+  'lambertConformalConic',
+  'mercator',
+  'naturalEarth',
+  'winkelTripel',
+  'globe',
+]
+
+// Check if the projection value is valid
+let projectionValue = (mapContainer.getAttribute('mapbox-projection') ||
+  'naturalEarth') as mapboxgl.Projection['name']
+if (!projectionList.includes(projectionValue)) {
+  projectionValue = 'mercator'
 }
 
+// Store map container data
 let mapboxData: MapboxInitData
 if (mapContainer) {
   mapboxData = {
@@ -20,7 +35,7 @@ if (mapContainer) {
     longPos: parseFloat(mapContainer.getAttribute('mapbox-longitude') || '0.0'),
     latPos: parseFloat(mapContainer.getAttribute('mapbox-latitude') || '0.0'),
     zoom: parseInt(mapContainer.getAttribute('mapbox-zoom') || '3'),
-    projection: projectionValue as unknown as mapboxgl.Projection,
+    projection: { name: projectionValue },
     scrollZoom: mapContainer.getAttribute('mapbox-scrollZoom') === 'true',
     doubleClickZoom: mapContainer.getAttribute('mapbox-doubleClickZoom') === 'true',
     adressPos: mapContainer.getAttribute('mapbox-position') || false,
@@ -34,7 +49,7 @@ if (mapContainer) {
     longPos: 0.0,
     latPos: 0.0,
     zoom: 3,
-    projection: 'naturalEarth' as unknown as mapboxgl.Projection,
+    projection: { name: 'naturalEarth' },
     scrollZoom: true,
     doubleClickZoom: true,
     adressPos: false,
@@ -46,29 +61,27 @@ export function getMapboxData() {
   return mapboxData
 }
 
+// Construct the map with the provided data
 export async function constructMap(data: MapboxInitData) {
   if (data.adressPos) {
-    // Use the Mapbox Geocoding API to geocode an address
-    fetch(getGeocodingUrl(data.adressPos, mapboxgl.accessToken))
-      .then((response) => response.json())
-      .then((geocodeData) => {
-        // Use a different variable name here
-        if (geocodeData.features.length > 0) {
-          const [longitude, latitude] = geocodeData.features[0].center
-          // Update the original data object with the geocoded coordinates
-          data.longPos = longitude
-          data.latPos = latitude
-        } else {
-          console.error('No results found')
-        }
-        return newMap(data)
-      })
-      .catch((error) => console.error(error))
-  } else {
-    return await newMap(data)
+    try {
+      const response = await fetch(getGeocodingUrl(data.adressPos, mapboxgl.accessToken))
+      const geocodeData = await response.json()
+      if (geocodeData.features.length > 0) {
+        const [longitude, latitude] = geocodeData.features[0].center
+        data.longPos = longitude
+        data.latPos = latitude
+      } else {
+        console.error('No results found')
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
+  return await newMap(data)
 }
 
+// Create a new map instance with the provided data
 async function newMap(data: MapboxInitData) {
   const map = new mapboxgl.Map({
     container: 'map-container',
