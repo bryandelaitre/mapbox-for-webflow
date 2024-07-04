@@ -6,7 +6,7 @@ import { type MapboxInitData, type mapMarker } from './interfaces'
 
 // Pick the marker html from the dom, extract data and initialize the marker object
 export function getMarkerFromDOM() {
-  const markerElement = document.querySelector('[mapbox-marker="wrapper"]')
+  const markerElement = document.querySelector('[mapbox-marker="true"]')
   let markerNode: HTMLElement
   let markerData: mapMarker
   if (markerElement != null) {

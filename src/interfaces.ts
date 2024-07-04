@@ -11,7 +11,6 @@ export interface MapboxInitData {
   scrollZoom: boolean
   doubleClickZoom: boolean
   adressPos: string | false
-  markerPos: string
 }
 
 export interface mapMarker {

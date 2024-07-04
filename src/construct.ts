@@ -32,14 +32,13 @@ if (mapContainer) {
     id: (mapContainer.id = 'map-container'),
     token: (mapboxgl.accessToken = mapContainer.getAttribute('mapbox-token') || ''),
     style: mapContainer.getAttribute('mapbox-style') || 'mapbox://styles/mapbox/streets-v11',
-    longPos: parseFloat(mapContainer.getAttribute('mapbox-longitude') || '0.0'),
-    latPos: parseFloat(mapContainer.getAttribute('mapbox-latitude') || '0.0'),
+    longPos: parseFloat(mapContainer.getAttribute('mapbox-position-longitude') || '0.0'),
+    latPos: parseFloat(mapContainer.getAttribute('mapbox-position-latitude') || '0.0'),
     zoom: parseInt(mapContainer.getAttribute('mapbox-zoom') || '3'),
     projection: { name: projectionValue },
     scrollZoom: mapContainer.getAttribute('mapbox-scrollZoom') === 'true',
     doubleClickZoom: mapContainer.getAttribute('mapbox-doubleClickZoom') === 'true',
-    adressPos: mapContainer.getAttribute('mapbox-position') || false,
-    markerPos: mapContainer.getAttribute('mapbox-marker') || '',
+    adressPos: mapContainer.getAttribute('mapbox-position-adress') || false,
   }
 } else {
   mapboxData = {
@@ -53,7 +52,6 @@ if (mapContainer) {
     scrollZoom: true,
     doubleClickZoom: true,
     adressPos: false,
-    markerPos: '',
   }
 }
 
