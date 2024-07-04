@@ -1,5 +1,11 @@
 # @bryandelaitre/mapbox-for-webflow
 
+## 1.1.1
+
+### Patch Changes
+
+- b0f492f: Fixed some attributes names
+
 ## 1.1.0
 
 ### Minor Changes
